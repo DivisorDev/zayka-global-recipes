@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zayka Global • 10,000+ Recipes</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        body { font-family: system-ui, sans-serif; }
+        .recipe-card:hover { transform: translateY(-8px); }
+    </style>
+</head>
+<body class="bg-zinc-950 text-white">
+
+    <div class="max-w-7xl mx-auto px-6 py-8">
+        <h1 class="text-5xl font-bold text-center mb-8">🌍 Zayka Global</h1>
+        <p class="text-center text-2xl text-orange-400 mb-10">10,000+ Veg & Non-Veg Recipes</p>
+
+        <input id="search" type="text" placeholder="Search recipe..." 
+               class="w-full bg-zinc-900 border border-zinc-700 rounded-3xl px-6 py-4 text-lg mb-10 outline-none">
+
+        <div id="recipeGrid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            <!-- Recipes will load here -->
+        </div>
+    </div>
+
+    <script>
+        let allRecipes = [];
+
+        // Load your 10,000 recipes JSON
+        fetch('recipes-10000.json')
+            .then(res => res.json())
+            .then(data => {
+                allRecipes = data.recipes || data;
+                renderRecipes(allRecipes);
+            })
+            .catch(() => {
+                document.getElementById('recipeGrid').innerHTML = '<p class="text-center text-red-400">JSON file load nahi ho raha. File ka naam "recipes-10000.json" hi hona chahiye.</p>';
+            });
+
+        function renderRecipes(recipes) {
+            const grid = document.getElementById('recipeGrid');
+            grid.innerHTML = '';
+            recipes.forEach(r => {
+                const div = document.createElement('div');
+                div.className = 'recipe-card bg-zinc-900 rounded-3xl overflow-hidden p-4';
+                div.innerHTML = `
+                    <img src="${r.image}" class="w-full h-48 object-cover rounded-2xl">
+                    <h3 class="mt-3 font-semibold">${r.title}</h3>
+                    <p class="text-sm text-zinc-400">${r.cuisine} • ${r.type} • ${r.time}</p>
+                `;
+                grid.appendChild(div);
+            });
+        }
+
+        // Simple search
+        document.getElementById('search').addEventListener('input', (e) => {
+            const term = e.target.value.toLowerCase();
+            const filtered = allRecipes.filter(r => 
+                r.title.toLowerCase().includes(term)
+            );
+            renderRecipes(filtered);
+        });
+    </script>
+</body>
+</html>

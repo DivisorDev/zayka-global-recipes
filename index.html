@@ -7,59 +7,80 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
-        body { font-family: system-ui, sans-serif; }
-        .recipe-card:hover { transform: translateY(-8px); }
+        body { font-family: system-ui, -apple-system, sans-serif; }
+        .recipe-card { transition: all 0.3s; }
+        .recipe-card:hover { transform: translateY(-10px); box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.3); }
+        .hero { background: linear-gradient(135deg, #1f2937, #111827); }
     </style>
 </head>
-<body class="bg-zinc-950 text-white">
+<body class="bg-zinc-950 text-white min-h-screen">
+
+    <!-- Header -->
+    <div class="hero py-12 text-center">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="flex justify-center mb-6">
+                <div class="w-20 h-20 bg-orange-500 rounded-3xl flex items-center justify-center text-5xl shadow-xl">🌍</div>
+            </div>
+            <h1 class="text-6xl font-bold tracking-tighter">Zayka Global</h1>
+            <p class="text-3xl text-orange-400 mt-3">10,000+ Veg & Non-Veg Recipes</p>
+            <p class="mt-2 text-zinc-400">India • Asia • Europe • Middle East</p>
+        </div>
+    </div>
 
     <div class="max-w-7xl mx-auto px-6 py-8">
-        <h1 class="text-5xl font-bold text-center mb-8">🌍 Zayka Global</h1>
-        <p class="text-center text-2xl text-orange-400 mb-10">10,000+ Veg & Non-Veg Recipes</p>
+        <!-- Search -->
+        <div class="relative mb-10">
+            <input id="searchInput" type="text" placeholder="Butter Chicken, Sushi, Shawarma, Biryani..." 
+                   class="w-full bg-zinc-900 border border-zinc-700 focus:border-orange-500 rounded-3xl px-8 py-6 text-xl outline-none">
+            <i class="fa-solid fa-magnifying-glass absolute right-8 top-1/2 -translate-y-1/2 text-orange-400 text-2xl"></i>
+        </div>
 
-        <input id="search" type="text" placeholder="Search recipe..." 
-               class="w-full bg-zinc-900 border border-zinc-700 rounded-3xl px-6 py-4 text-lg mb-10 outline-none">
-
-        <div id="recipeGrid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            <!-- Recipes will load here -->
+        <!-- Recipe Grid -->
+        <div id="recipeGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+            <!-- JS se fill hoga -->
         </div>
     </div>
 
     <script>
         let allRecipes = [];
 
-        // Load your 10,000 recipes JSON
         fetch('recipes-10000.json')
             .then(res => res.json())
             .then(data => {
                 allRecipes = data.recipes || data;
                 renderRecipes(allRecipes);
             })
-            .catch(() => {
-                document.getElementById('recipeGrid').innerHTML = '<p class="text-center text-red-400">JSON file load nahi ho raha. File ka naam "recipes-10000.json" hi hona chahiye.</p>';
+            .catch(err => {
+                console.error(err);
+                document.getElementById('recipeGrid').innerHTML = `<p class="col-span-full text-center text-red-400 py-20">JSON file load nahi ho raha.<br>File ka naam exactly "recipes-10000.json" hona chahiye.</p>`;
             });
 
         function renderRecipes(recipes) {
             const grid = document.getElementById('recipeGrid');
             grid.innerHTML = '';
-            recipes.forEach(r => {
-                const div = document.createElement('div');
-                div.className = 'recipe-card bg-zinc-900 rounded-3xl overflow-hidden p-4';
-                div.innerHTML = `
-                    <img src="${r.image}" class="w-full h-48 object-cover rounded-2xl">
-                    <h3 class="mt-3 font-semibold">${r.title}</h3>
-                    <p class="text-sm text-zinc-400">${r.cuisine} • ${r.type} • ${r.time}</p>
+            recipes.slice(0, 50).forEach(r => {   // pehle 50 dikha raha hai, baad mein pagination add kar sakte hain
+                const card = document.createElement('div');
+                card.className = 'recipe-card bg-zinc-900 rounded-3xl overflow-hidden cursor-pointer border border-zinc-800';
+                card.innerHTML = `
+                    <img src="${r.image || 'https://picsum.photos/400/300'}" class="w-full h-52 object-cover">
+                    <div class="p-5">
+                        <h3 class="font-semibold text-xl leading-tight">${r.title}</h3>
+                        <div class="flex justify-between mt-4 text-sm">
+                            <span class="capitalize px-4 py-1 bg-zinc-800 rounded-3xl">${r.cuisine}</span>
+                            <span class="\( {r.type === 'veg' ? 'text-emerald-400' : 'text-red-400'} font-medium"> \){r.type.toUpperCase()}</span>
+                        </div>
+                        <p class="text-xs text-zinc-500 mt-3">${r.time}</p>
+                    </div>
                 `;
-                grid.appendChild(div);
+                card.onclick = () => alert(`Recipe: ${r.title}\n\nCuisine: ${r.cuisine}\nType: ${r.type}\nTime: ${r.time}\n\n(Full details + steps baad mein add karenge)`);
+                grid.appendChild(card);
             });
         }
 
-        // Simple search
-        document.getElementById('search').addEventListener('input', (e) => {
+        // Search functionality
+        document.getElementById('searchInput').addEventListener('input', function(e) {
             const term = e.target.value.toLowerCase();
-            const filtered = allRecipes.filter(r => 
-                r.title.toLowerCase().includes(term)
-            );
+            const filtered = allRecipes.filter(r => r.title.toLowerCase().includes(term));
             renderRecipes(filtered);
         });
     </script>

@@ -11,6 +11,8 @@
         .recipe-card { transition: all 0.3s ease; }
         .recipe-card:hover { transform: translateY(-12px); box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.4); }
         .hero { background: linear-gradient(135deg, #1f2937 0%, #111827 100%); }
+        .modal { animation: modalPop 0.3s ease-out; }
+        @keyframes modalPop { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
     </style>
 </head>
 <body class="bg-zinc-950 text-white">
@@ -43,26 +45,53 @@
         </div>
     </div>
 
+    <!-- Recipe Detail Modal -->
+    <div id="recipeModal" class="hidden fixed inset-0 bg-black/90 flex items-center justify-center z-50 p-4">
+        <div class="bg-zinc-900 rounded-3xl max-w-2xl w-full max-h-[90vh] overflow-hidden modal">
+            <div class="p-6 border-b border-zinc-700 flex items-center justify-between">
+                <h2 id="modalTitle" class="text-3xl font-bold"></h2>
+                <button onclick="closeModal()" class="text-3xl text-zinc-400 hover:text-white">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            
+            <div class="p-6 overflow-auto max-h-[70vh]">
+                <img id="modalImage" class="w-full h-64 object-cover rounded-2xl mb-6" alt="">
+                
+                <div class="flex gap-4 mb-6">
+                    <span id="modalCuisine" class="px-5 py-2 bg-orange-500/10 text-orange-400 rounded-3xl text-sm font-semibold"></span>
+                    <span id="modalType" class="px-5 py-2 rounded-3xl text-sm font-semibold"></span>
+                    <span id="modalTime" class="px-5 py-2 bg-zinc-800 rounded-3xl text-sm"></span>
+                </div>
+                
+                <h3 class="font-semibold text-lg mb-3">Ingredients</h3>
+                <ul id="modalIngredients" class="grid grid-cols-1 gap-3 mb-8"></ul>
+                
+                <h3 class="font-semibold text-lg mb-3">Step-by-Step Method</h3>
+                <ol id="modalSteps" class="space-y-6"></ol>
+            </div>
+            
+            <div class="p-6 border-t border-zinc-700 bg-zinc-950 flex justify-end">
+                <button onclick="closeModal()" 
+                        class="px-8 py-4 bg-orange-500 hover:bg-orange-600 text-white font-semibold rounded-3xl">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+
     <script>
         let allRecipes = [];
 
         fetch('recipes-10000.json')
-            .then(response => {
-                if (!response.ok) throw new Error('JSON file not found');
-                return response.json();
-            })
+            .then(response => response.json())
             .then(data => {
                 allRecipes = data.recipes || data;
-                console.log(allRecipes.length + " recipes loaded");
                 renderRecipes(allRecipes);
             })
             .catch(err => {
                 console.error(err);
-                document.getElementById('recipeGrid').innerHTML = `
-                    <div class="col-span-full text-center py-20 text-red-400">
-                        <p class="text-2xl">Recipes load nahi ho rahi</p>
-                        <p class="mt-4">recipes-10000.json file sahi se upload hai?</p>
-                    </div>`;
+                document.getElementById('recipeGrid').innerHTML = `<div class="col-span-full text-center py-20 text-red-400">JSON file load nahi ho raha</div>`;
             });
 
         function renderRecipes(recipes) {
@@ -85,14 +114,49 @@
                         <p class="text-xs text-zinc-500 mt-4">${recipe.time}</p>
                     </div>
                 `;
-                
-                // Click par full modal (abhi simple alert, agle step mein proper modal banayenge)
-                card.addEventListener('click', () => {
-                    alert(`🍛 ${recipe.title}\n\nCuisine: ${recipe.cuisine}\nType: ${recipe.type}\nTime: ${recipe.time}\n\nFull ingredients & steps agle step mein add kar denge!`);
-                });
-                
+                card.addEventListener('click', () => showRecipeModal(recipe));
                 grid.appendChild(card);
             });
+        }
+
+        function showRecipeModal(recipe) {
+            document.getElementById('modalTitle').textContent = recipe.title;
+            document.getElementById('modalImage').src = recipe.image;
+            document.getElementById('modalCuisine').textContent = recipe.cuisine.toUpperCase();
+            
+            const typeEl = document.getElementById('modalType');
+            typeEl.textContent = recipe.type === 'veg' ? '🌱 VEG' : '🍖 NON-VEG';
+            typeEl.className = recipe.type === 'veg' 
+                ? 'px-5 py-2 bg-emerald-500/10 text-emerald-400 rounded-3xl text-sm font-semibold' 
+                : 'px-5 py-2 bg-red-500/10 text-red-400 rounded-3xl text-sm font-semibold';
+            
+            document.getElementById('modalTime').innerHTML = `<i class="fa-solid fa-clock mr-2"></i> ${recipe.time}`;
+            
+            // Ingredients
+            const ingList = document.getElementById('modalIngredients');
+            ingList.innerHTML = recipe.ingredients.map(ing => `
+                <li class="flex items-center gap-3 bg-zinc-800 px-5 py-3 rounded-2xl">
+                    <i class="fa-solid fa-check text-orange-400"></i> ${ing}
+                </li>
+            `).join('');
+            
+            // Steps
+            const stepsList = document.getElementById('modalSteps');
+            stepsList.innerHTML = recipe.steps.map((step, i) => `
+                <li class="flex gap-4">
+                    <span class="flex-shrink-0 w-7 h-7 bg-orange-500 text-white rounded-2xl flex items-center justify-center font-semibold">${i+1}</span>
+                    <p class="leading-relaxed">${step}</p>
+                </li>
+            `).join('');
+            
+            document.getElementById('recipeModal').classList.remove('hidden');
+            document.getElementById('recipeModal').classList.add('flex');
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('recipeModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
         }
 
         // Search
@@ -102,6 +166,11 @@
                 r.title.toLowerCase().includes(term)
             );
             renderRecipes(filtered);
+        });
+
+        // Close modal on outside click
+        document.getElementById('recipeModal').addEventListener('click', function(e) {
+            if (e.target === this) closeModal();
         });
     </script>
 </body>

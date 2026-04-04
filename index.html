@@ -1,18 +1,18 @@
 <!DOCTYPE html>
-<html lang="hi">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zayka Global • 10,000+ Recipes</title>
+    <title>Zayka Global • 10,000+ World Recipes</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
-        body { font-family: system-ui, sans-serif; }
-        .recipe-card { transition: all 0.3s ease; }
-        .recipe-card:hover { transform: translateY(-12px); box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.4); }
+        body { font-family: system-ui, -apple-system, sans-serif; }
+        .recipe-card { transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+        .recipe-card:hover { transform: translateY(-12px); box-shadow: 0 25px 50px -12px rgb(249 115 22 / 0.3); }
         .hero { background: linear-gradient(135deg, #1f2937 0%, #111827 100%); }
         .modal { animation: modalPop 0.3s ease-out; }
-        @keyframes modalPop { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        @keyframes modalPop { from { transform: scale(0.95); opacity: 0; } to { transform: scale(1); opacity: 1; } }
     </style>
 </head>
 <body class="bg-zinc-950 text-white">
@@ -24,7 +24,7 @@
                 <div class="w-24 h-24 bg-gradient-to-br from-orange-500 to-amber-500 rounded-3xl flex items-center justify-center text-6xl shadow-2xl">🌍</div>
             </div>
             <h1 class="text-6xl font-bold tracking-tighter">Zayka Global</h1>
-            <p class="text-3xl text-orange-400 mt-4">10,000+ Veg & Non-Veg Recipes</p>
+            <p class="text-3xl text-orange-400 mt-4">10,000+ Authentic Veg & Non-Veg Recipes</p>
             <p class="text-zinc-400 mt-2">India • Asia • Europe • Middle East</p>
         </div>
     </div>
@@ -32,49 +32,43 @@
     <div class="max-w-7xl mx-auto px-6 py-10">
         <!-- Search -->
         <div class="relative mb-12">
-            <input id="searchInput" 
-                   type="text" 
-                   placeholder="Butter Chicken, Shawarma, Sushi, Biryani..." 
+            <input id="searchInput" type="text" placeholder="Search recipes... Butter Chicken, Shawarma, Sushi, Paella..." 
                    class="w-full bg-zinc-900 border border-zinc-700 focus:border-orange-500 rounded-3xl px-8 py-6 text-xl outline-none">
             <i class="fa-solid fa-magnifying-glass absolute right-8 top-1/2 -translate-y-1/2 text-2xl text-orange-400"></i>
         </div>
 
         <!-- Recipe Grid -->
-        <div id="recipeGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-8">
-            <!-- JS se fill hoga -->
-        </div>
+        <div id="recipeGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-8"></div>
     </div>
 
-    <!-- Recipe Detail Modal -->
+    <!-- Premium Modal -->
     <div id="recipeModal" class="hidden fixed inset-0 bg-black/90 flex items-center justify-center z-50 p-4">
-        <div class="bg-zinc-900 rounded-3xl max-w-2xl w-full max-h-[90vh] overflow-hidden modal">
-            <div class="p-6 border-b border-zinc-700 flex items-center justify-between">
+        <div class="bg-zinc-900 rounded-3xl max-w-3xl w-full max-h-[92vh] overflow-hidden modal">
+            <div class="p-6 border-b border-zinc-700 flex items-center justify-between sticky top-0 bg-zinc-900 z-10">
                 <h2 id="modalTitle" class="text-3xl font-bold"></h2>
-                <button onclick="closeModal()" class="text-3xl text-zinc-400 hover:text-white">
-                    <i class="fa-solid fa-xmark"></i>
-                </button>
+                <button onclick="closeModal()" class="text-4xl text-zinc-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
             </div>
             
             <div class="p-6 overflow-auto max-h-[70vh]">
-                <img id="modalImage" class="w-full h-64 object-cover rounded-2xl mb-6" alt="">
+                <img id="modalImage" class="w-full h-64 object-cover rounded-3xl mb-8 shadow-xl" alt="">
                 
-                <div class="flex gap-4 mb-6">
-                    <span id="modalCuisine" class="px-5 py-2 bg-orange-500/10 text-orange-400 rounded-3xl text-sm font-semibold"></span>
-                    <span id="modalType" class="px-5 py-2 rounded-3xl text-sm font-semibold"></span>
-                    <span id="modalTime" class="px-5 py-2 bg-zinc-800 rounded-3xl text-sm"></span>
+                <div class="flex gap-4 mb-8">
+                    <span id="modalCuisine" class="px-6 py-2 bg-orange-500/10 text-orange-400 rounded-3xl text-sm font-semibold"></span>
+                    <span id="modalType" class="px-6 py-2 rounded-3xl text-sm font-semibold"></span>
+                    <span id="modalTime" class="flex items-center gap-2 px-6 py-2 bg-zinc-800 rounded-3xl text-sm"></span>
                 </div>
                 
-                <h3 class="font-semibold text-lg mb-3">Ingredients</h3>
-                <ul id="modalIngredients" class="grid grid-cols-1 gap-3 mb-8"></ul>
+                <h3 class="text-xl font-semibold mb-4">Ingredients</h3>
+                <ul id="modalIngredients" class="grid grid-cols-1 gap-4 mb-10"></ul>
                 
-                <h3 class="font-semibold text-lg mb-3">Step-by-Step Method</h3>
-                <ol id="modalSteps" class="space-y-6"></ol>
+                <h3 class="text-xl font-semibold mb-4">Step-by-Step Instructions</h3>
+                <ol id="modalSteps" class="space-y-8 text-base leading-relaxed"></ol>
             </div>
             
-            <div class="p-6 border-t border-zinc-700 bg-zinc-950 flex justify-end">
-                <button onclick="closeModal()" 
-                        class="px-8 py-4 bg-orange-500 hover:bg-orange-600 text-white font-semibold rounded-3xl">
-                    Close
+            <div class="p-6 border-t border-zinc-700 bg-zinc-950 flex justify-between items-center">
+                <button onclick="closeModal()" class="px-8 py-4 text-zinc-400 font-medium">Close Recipe</button>
+                <button onclick="saveRecipe()" class="flex items-center gap-3 px-8 py-4 bg-orange-500 hover:bg-orange-600 rounded-3xl text-white font-semibold">
+                    <i class="fa-solid fa-bookmark"></i> Save to My Cookbook
                 </button>
             </div>
         </div>
@@ -84,32 +78,25 @@
         let allRecipes = [];
 
         fetch('recipes-10000.json')
-            .then(response => response.json())
+            .then(r => r.json())
             .then(data => {
                 allRecipes = data.recipes || data;
                 renderRecipes(allRecipes);
-            })
-            .catch(err => {
-                console.error(err);
-                document.getElementById('recipeGrid').innerHTML = `<div class="col-span-full text-center py-20 text-red-400">JSON file load nahi ho raha</div>`;
             });
 
         function renderRecipes(recipes) {
             const grid = document.getElementById('recipeGrid');
             grid.innerHTML = '';
-            
             recipes.slice(0, 60).forEach(recipe => {
                 const card = document.createElement('div');
                 card.className = 'recipe-card bg-zinc-900 rounded-3xl overflow-hidden cursor-pointer border border-zinc-800';
                 card.innerHTML = `
-                    <img src="\( {recipe.image}" class="w-full h-52 object-cover" alt=" \){recipe.title}">
+                    <img src="${recipe.image}" class="w-full h-52 object-cover">
                     <div class="p-5">
-                        <h3 class="font-semibold text-xl leading-tight mb-3">${recipe.title}</h3>
-                        <div class="flex items-center justify-between">
-                            <span class="capitalize text-sm bg-zinc-800 px-4 py-1.5 rounded-3xl">${recipe.cuisine}</span>
-                            <span class="text-sm font-medium ${recipe.type === 'veg' ? 'text-emerald-400' : 'text-red-400'}">
-                                ${recipe.type.toUpperCase()}
-                            </span>
+                        <h3 class="font-semibold text-xl mb-2">${recipe.title}</h3>
+                        <div class="flex justify-between items-center">
+                            <span class="capitalize px-4 py-1 bg-zinc-800 rounded-3xl text-sm">${recipe.cuisine}</span>
+                            <span class="\( {recipe.type === 'veg' ? 'text-emerald-400' : 'text-red-400'} font-medium"> \){recipe.type.toUpperCase()}</span>
                         </div>
                         <p class="text-xs text-zinc-500 mt-4">${recipe.time}</p>
                     </div>
@@ -120,35 +107,32 @@
         }
 
         function showRecipeModal(recipe) {
-            document.getElementById('modalTitle').textContent = recipe.title;
+            document.getElementById('modalTitle').innerHTML = recipe.title;
             document.getElementById('modalImage').src = recipe.image;
             document.getElementById('modalCuisine').textContent = recipe.cuisine.toUpperCase();
             
             const typeEl = document.getElementById('modalType');
-            typeEl.textContent = recipe.type === 'veg' ? '🌱 VEG' : '🍖 NON-VEG';
-            typeEl.className = recipe.type === 'veg' 
-                ? 'px-5 py-2 bg-emerald-500/10 text-emerald-400 rounded-3xl text-sm font-semibold' 
-                : 'px-5 py-2 bg-red-500/10 text-red-400 rounded-3xl text-sm font-semibold';
+            typeEl.innerHTML = recipe.type === 'veg' ? '🌱 VEGETARIAN' : '🍖 NON-VEGETARIAN';
+            typeEl.className = recipe.type === 'veg' ? 'px-6 py-2 bg-emerald-500/10 text-emerald-400 rounded-3xl text-sm font-semibold' : 'px-6 py-2 bg-red-500/10 text-red-400 rounded-3xl text-sm font-semibold';
             
-            document.getElementById('modalTime').innerHTML = `<i class="fa-solid fa-clock mr-2"></i> ${recipe.time}`;
-            
-            // Ingredients
-            const ingList = document.getElementById('modalIngredients');
-            ingList.innerHTML = recipe.ingredients.map(ing => `
-                <li class="flex items-center gap-3 bg-zinc-800 px-5 py-3 rounded-2xl">
-                    <i class="fa-solid fa-check text-orange-400"></i> ${ing}
-                </li>
-            `).join('');
-            
-            // Steps
-            const stepsList = document.getElementById('modalSteps');
-            stepsList.innerHTML = recipe.steps.map((step, i) => `
-                <li class="flex gap-4">
-                    <span class="flex-shrink-0 w-7 h-7 bg-orange-500 text-white rounded-2xl flex items-center justify-center font-semibold">${i+1}</span>
+            document.getElementById('modalTime').innerHTML = `<i class="fa-solid fa-clock"></i> ${recipe.time}`;
+
+            // Ingredients (long list)
+            const ingHTML = recipe.ingredients.map(item => `
+                <li class="flex items-start gap-3 bg-zinc-800 px-5 py-4 rounded-2xl">
+                    <i class="fa-solid fa-check-circle text-orange-400 mt-1"></i>
+                    <span>${item}</span>
+                </li>`).join('');
+            document.getElementById('modalIngredients').innerHTML = ingHTML;
+
+            // Steps (long detailed English steps)
+            const stepsHTML = recipe.steps.map((step, i) => `
+                <li class="flex gap-5">
+                    <span class="flex-shrink-0 w-8 h-8 bg-orange-500 text-white rounded-2xl flex items-center justify-center font-bold">${i+1}</span>
                     <p class="leading-relaxed">${step}</p>
-                </li>
-            `).join('');
-            
+                </li>`).join('');
+            document.getElementById('modalSteps').innerHTML = stepsHTML;
+
             document.getElementById('recipeModal').classList.remove('hidden');
             document.getElementById('recipeModal').classList.add('flex');
         }
@@ -159,18 +143,16 @@
             modal.classList.remove('flex');
         }
 
+        function saveRecipe() {
+            alert("✅ Recipe saved to your personal cookbook (Premium feature coming in next step)");
+            closeModal();
+        }
+
         // Search
         document.getElementById('searchInput').addEventListener('input', (e) => {
             const term = e.target.value.toLowerCase();
-            const filtered = allRecipes.filter(r => 
-                r.title.toLowerCase().includes(term)
-            );
+            const filtered = allRecipes.filter(r => r.title.toLowerCase().includes(term));
             renderRecipes(filtered);
-        });
-
-        // Close modal on outside click
-        document.getElementById('recipeModal').addEventListener('click', function(e) {
-            if (e.target === this) closeModal();
         });
     </script>
 </body>

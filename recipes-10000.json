@@ -6,7 +6,9 @@
       "cuisine": "indian",
       "type": "nonveg",
       "time": "45 mins",
-      "image": "https://picsum.photos/id/1015/800/600"
+      "image": "https://picsum.photos/id/1015/800/600",
+      "ingredients": ["500g chicken thighs", "200g tomato puree", "100ml fresh cream", "2 tbsp butter", "2 tsp garam masala", "ginger-garlic paste", "kasuri methi"],
+      "steps": ["Chicken ko yogurt aur spices mein 2 ghante marinade karo.", "Chicken ko grill ya pan fry karo.", "Butter mein tomato gravy banao.", "Grilled chicken daal kar 10 min simmer karo.", "Cream aur kasuri methi daal kar serve karo."]
     },
     {
       "id": 2,
@@ -14,7 +16,9 @@
       "cuisine": "indian",
       "type": "veg",
       "time": "35 mins",
-      "image": "https://picsum.photos/id/133/800/600"
+      "image": "https://picsum.photos/id/133/800/600",
+      "ingredients": ["300g paneer", "1 cup yogurt", "2 bell peppers", "onion", "tomato gravy", "kasuri methi"],
+      "steps": ["Paneer ko yogurt-spices mein marinade karo.", "Paneer aur veggies grill karo.", "Rich tomato gravy banao.", "Sab ko mix karke simmer karo.", "Kasuri methi se garnish karo."]
     },
     {
       "id": 3,
@@ -22,7 +26,9 @@
       "cuisine": "middleeast",
       "type": "nonveg",
       "time": "60 mins",
-      "image": "https://picsum.photos/id/201/800/600"
+      "image": "https://picsum.photos/id/201/800/600",
+      "ingredients": ["1kg chicken thighs", "shawarma spices", "garlic sauce", "pita bread", "pickles"],
+      "steps": ["Chicken ko overnight marinade karo.", "Oven mein ya grill karo.", "Thin slices karo.", "Pita mein garlic sauce aur pickles ke saath serve karo."]
     },
     {
       "id": 4,
@@ -30,7 +36,9 @@
       "cuisine": "asian",
       "type": "veg",
       "time": "25 mins",
-      "image": "https://picsum.photos/id/292/800/600"
+      "image": "https://picsum.photos/id/292/800/600",
+      "ingredients": ["200g rice noodles", "tofu", "bean sprouts", "peanuts", "tamarind sauce", "spring onions"],
+      "steps": ["Noodles ko garam pani mein soak karo.", "Tofu aur veggies stir fry karo.", "Noodles aur tamarind sauce add karo.", "Peanuts se garnish karo."]
     }
   ]
 }

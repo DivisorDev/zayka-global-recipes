@@ -1,0 +1,36 @@
+{
+  "recipes": [
+    {
+      "id": 1,
+      "title": "Butter Chicken",
+      "cuisine": "indian",
+      "type": "nonveg",
+      "time": "45 mins",
+      "image": "https://picsum.photos/id/1015/800/600"
+    },
+    {
+      "id": 2,
+      "title": "Paneer Tikka Masala",
+      "cuisine": "indian",
+      "type": "veg",
+      "time": "35 mins",
+      "image": "https://picsum.photos/id/133/800/600"
+    },
+    {
+      "id": 3,
+      "title": "Chicken Shawarma",
+      "cuisine": "middleeast",
+      "type": "nonveg",
+      "time": "60 mins",
+      "image": "https://picsum.photos/id/201/800/600"
+    },
+    {
+      "id": 4,
+      "title": "Veg Pad Thai",
+      "cuisine": "asian",
+      "type": "veg",
+      "time": "25 mins",
+      "image": "https://picsum.photos/id/292/800/600"
+    }
+  ]
+}
